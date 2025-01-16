@@ -160,7 +160,7 @@ async def restart_handler(_, m):
 @bot.on_message(filters.command(["ankit","upload"]) )
 async def account_login(bot: Client, m: Message):
     global processing_request
-    if message.from_user.id == my_id:
+    if m.from_user.id == my_id:
             await m.reply_text("** YOU ARE NOT IN ADMIN LIST **",reply_markup=keyboard)
             return
     else: 
