@@ -158,10 +158,11 @@ async def restart_handler(_, m):
 
 
 @bot.on_message(filters.command(["ankit","upload"]) )
-async def txt_handler(bot: Client, m: Message):
+async def account_login(bot: Client, m: Message):
+    global processing_request
     if message.from_user.id == my_id:
-                    await m.reply_text("** YOU ARE NOT IN ADMIN LIST **",reply_markup=keyboard)
-                    return
+            await m.reply_text("** YOU ARE NOT IN ADMIN LIST **",reply_markup=keyboard)
+            return
     else: 
         editable = await m.reply_text(f"**➠ 𝐒𝐞𝐧𝐝 𝐌𝐞 𝐘𝐨𝐮𝐫 𝐓𝐗𝐓 𝐅𝐢𝐥𝐞 𝐢𝐧 𝐀 𝐏𝐫𝐨𝐩𝐞𝐫 𝐖𝐚𝐲 \n\n➠ TXT FORMAT : LINK : URL \n➠ 𝐌𝐨𝐝𝐢𝐟𝐢𝐞𝐝 𝐁𝐲:  @SUNXPP_1**")
         input: Message = await bot.listen(editable.chat.id)
@@ -175,29 +176,69 @@ async def txt_handler(bot: Client, m: Message):
             credit = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
             path = f"./downloads/{m.chat.id}"
 
-    try:    
-        with open(x, "r") as f:
-            content = f.read()
-        content = content.split("\n")
-        links = []
-        for i in content:
-            links.append(i.split("://", 1))
-        os.remove(x)
-    except:
-        await m.reply_text("Invalid file input.")
-        os.remove(x)
-        return
-    
-   
-    await editable.edit(f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **1**")
+            try:
+                links = []
+                videocount = 0
+                pdfcount = 0
+                with open(x, "r", encoding="utf-8") as f:
+                    for line in f:
+                        link = line.strip().split("://", 1)
+                        links.append(link)
+                        if ".pdf" in link[1]:
+                            pdfcount += 1 
+                        else:
+                            videocount += 1
+            except Exception as e:
+                await m.reply_text("Error occurred while processing the file.🥲")
+                print("Error:", e)
+                os.remove(x)
+                processing_request = False  # Reset the processing flag
+                return
+
+        else:
+            content = input.text
+            content = content.split("\n")
+            links = []
+            videocount = 0
+            pdfcount = 0
+
+            for i in content:
+                link = i.split("://", 1)
+                links.append(link)
+                if ".pdf" in link[1]:
+                    pdfcount += 1 
+                else:
+                    videocount += 1
+    await editable.edit(f"**Total links found are : {len(links)}\n┃\n┠ Total Video Count : {videocount}\n┠ Total Pdf Count: {pdfcount}  \n┠ Send From where you want to download initial is  : `1` \n┃\n┠ Send `stop` If don't want to Contine \n┖ Bot By : @ITS_NOT_ROMEO**" )
     input0: Message = await bot.listen(editable.chat.id)
     raw_text = input0.text
     await input0.delete(True)
-    try:
-        arg = int(raw_text)
-    except:
-        arg = 1
-    await editable.edit("**Enter Your Batch Name or send d for grabing from text filename.**")
+    if raw_text.lower() == "stop":
+        await editable.edit(f"**Task Stoped ! **")
+        await input0.delete(True)
+        processing_request = False  # Reset the processing flag
+        os.remove(x)
+        return
+    
+
+    await editable.edit(f"**ENTER TILL WHERE YOU WANT TO DOWNLOAD \n┃\n┠ Starting Dowload Form : `{raw_text}`\n┖ Last Index Of Links is : `{len(links)}` **")
+    input9: Message = await bot.listen(editable.chat.id)
+    raw_text9 = input9.text
+    
+    if int(input9.text) > len(links) :
+        await editable.edit(f"**PLZ ENTER NUMBER IN RANGE OF INDEX COUNT    **")
+        processing_request = False  # Reset the processing flag
+        await m.reply_text("**Exiting Task......  **")
+        return
+    else: await input9.delete(True)
+    
+    await editable.edit("𝗜𝗻 𝗖𝗮𝘀𝗲 𝗬𝗼𝘂𝗿 𝗧𝗫𝗧 , 𝗖𝗮𝗿𝗲𝗲𝗿𝘄𝗶𝗹𝗹 𝗮𝗽𝗽, 𝗦𝗲𝗻𝗱 𝗕𝗮𝘁𝗰𝗵 𝗧𝗼𝗸𝗲𝗻\n\n𝐎𝐑\n\n`KUSH`")
+    input7: Message = await bot.listen(editable.chat.id)
+    authkey = input7.text
+    await input7.delete(True)
+    await x.delete()
+
+    await editable.edit("**Enter Batch Name or send d for grabbing from text filename.**")
     input1: Message = await bot.listen(editable.chat.id)
     raw_text0 = input1.text
     await input1.delete(True)
@@ -206,54 +247,65 @@ async def txt_handler(bot: Client, m: Message):
     else:
         b_name = raw_text0
 
-    await editable.edit("**Enter resolution.\n Eg : 480 or 720**")
+
+    # await editable.edit("**Enter resolution \n SEND 1 for 720p \n 2 for 480 \n 3 for 360 \n 4 for 240**")
+    await editable.edit("**Enter resolution \n SEND 1 for 720p \n 2 for 480 \n 3 for 360 \n 4 for 240**")
     input2: Message = await bot.listen(editable.chat.id)
     raw_text2 = input2.text
+    quality = input2.text
     await input2.delete(True)
-    try:
-         if raw_text2 == "144":
-            res = "256x144"
-        elif raw_text2 == "240":
-            res = "426x240"
-        elif raw_text2 == "360":
-            res = "640x360"
-        elif raw_text2 == "480":
-            res = "854x480"
-        elif raw_text2 == "720":
-            res = "1280x720"
-        elif raw_text2 == "1080":
-            res = "1920x1080" 
-        else: 
-            res = "UN"
-    except Exception:
-            res = "UN"
     
-    await editable.edit("**Enter Your Name or send 'de' for use default.\n Eg : 𝐀𝐍𝐊𝐈𝐓 𝐒𝐇𝐀𝐊𝐘𝐀™👨🏻‍💻**")
+    
+    await editable.edit("**Enter Your Name or send `de` for use default**")
     input3: Message = await bot.listen(editable.chat.id)
     raw_text3 = input3.text
     await input3.delete(True)
     if raw_text3 == 'de':
-        CR = credit
+        CR = "KUSH"
     else:
         CR = raw_text3
-        
-       
-    await editable.edit("Now send the **Thumb url**\n**Eg :** ``\n\nor Send `no`")
+
+
+    await editable.edit("**🖼 Thumbnail \n\n• Custom Thumbnail : Use @vtelegraphbot and send me link \n• If you don't want Send :  `no` **")  
     input6 = message = await bot.listen(editable.chat.id)
     raw_text6 = input6.text
     await input6.delete(True)
-    await editable.delete()
-
+    #await editable.delete()
     thumb = input6.text
+    thumb2 = input6.text
+
+    await editable.edit("**⚡️ Thumnail in PDF too ? \n\n• If need Same thumb on pdf as video send : `yes` \nNOTE : if you have given stumb for Video then only use this   \n• SEND `no` If you dont want to add \n\n• Want other thumbnail ? \n\n• Send `custom`  IF need Different thubnail for pdf **")  
+    input7 = message = await bot.listen(editable.chat.id)
+    raw_text7 = input7.text.lower()  # Convert to lowercase
+    await input7.delete(True)
+    
+
+    if raw_text7 == "custom":
+     await editable.edit("**Send URl of Pdf Thumbanil **")  
+     input8 = message = await bot.listen(editable.chat.id)
+     raw_text8 = input8.text.lower()  # Convert to lowercase
+     await input8.delete(True)
+     await editable.delete()
+     thumb3 = input8.text 
+
+    else: await editable.delete() 
+      
+    
     if thumb.startswith("http://") or thumb.startswith("https://"):
-        getstatusoutput(f"wget '{thumb}' -O 'thumb.jpg'")
-        thumb = "thumb.jpg"
+        # getstatusoutput(f"wget '{thumb}' -O 'thumb.jpg'")
+        getstatusoutput(f"wget {thumb} -O thumb1.jpg")
+        thumb = "thumb1.jpg"
     else:
         thumb == "no"
 
-    count =int(raw_text)    
+    if len(links) == 1:
+        count = 1
+    else:
+        count = int(raw_text)
+  
     try:
-        for i in range(arg-1, len(links)):
+        for i in range(count - 1, int(input9.text)):
+        #for i in range(count - 1, len(links)):    
 
             Vxy = links[i][1].replace("file/d/","uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing","")
             url = "https://" + Vxy
