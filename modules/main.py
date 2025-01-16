@@ -12,7 +12,7 @@ import cloudscraper
 
 import core as helper
 from utils import progress_bar
-from vars import API_ID, API_HASH, BOT_TOKEN
+from vars import *
 from aiohttp import ClientSession
 from pyromod import listen
 from subprocess import getstatusoutput
@@ -160,16 +160,21 @@ async def restart_handler(_, m):
 @bot.on_message(filters.command(["ankit","upload"]) )
 async def txt_handler(bot: Client, m: Message):
     if message.from_user.id == my_id:
-        await m.reply_text("** YOU ARE NOT IN ADMIN LIST **",reply_markup=keyboard)
-        return
-else:
-    editable = await m.reply_text(f"**🔹Hi I am Poweful TXT Downloader📥 Bot.**\n🔹**Send me the TXT file and wait.**")
-    input: Message = await bot.listen(editable.chat.id)
-    x = await input.download()
-    await input.delete(True)
-    file_name, ext = os.path.splitext(os.path.basename(x))
-    credit = f"𝐀𝐍𝐊𝐈𝐓 𝐒𝐇𝐀𝐊𝐘𝐀™🇮🇳"
-    token = f"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzYxNTE3MzAuMTI2LCJkYXRhIjp7Il9pZCI6IjYzMDRjMmY3Yzc5NjBlMDAxODAwNDQ4NyIsInVzZXJuYW1lIjoiNzc2MTAxNzc3MCIsImZpcnN0TmFtZSI6IkplZXYgbmFyYXlhbiIsImxhc3ROYW1lIjoic2FoIiwib3JnYW5pemF0aW9uIjp7Il9pZCI6IjVlYjM5M2VlOTVmYWI3NDY4YTc5ZDE4OSIsIndlYnNpdGUiOiJwaHlzaWNzd2FsbGFoLmNvbSIsIm5hbWUiOiJQaHlzaWNzd2FsbGFoIn0sImVtYWlsIjoiV1dXLkpFRVZOQVJBWUFOU0FIQEdNQUlMLkNPTSIsInJvbGVzIjpbIjViMjdiZDk2NTg0MmY5NTBhNzc4YzZlZiJdLCJjb3VudHJ5R3JvdXAiOiJJTiIsInR5cGUiOiJVU0VSIn0sImlhdCI6MTczNTU0NjkzMH0.iImf90mFu_cI-xINBv4t0jVz-rWK1zeXOIwIFvkrS0M"
+                    await m.reply_text("** YOU ARE NOT IN ADMIN LIST **",reply_markup=keyboard)
+                    return
+    else: 
+        editable = await m.reply_text(f"**➠ 𝐒𝐞𝐧𝐝 𝐌𝐞 𝐘𝐨𝐮𝐫 𝐓𝐗𝐓 𝐅𝐢𝐥𝐞 𝐢𝐧 𝐀 𝐏𝐫𝐨𝐩𝐞𝐫 𝐖𝐚𝐲 \n\n➠ TXT FORMAT : LINK : URL \n➠ 𝐌𝐨𝐝𝐢𝐟𝐢𝐞𝐝 𝐁𝐲:  @SUNXPP_1**")
+        input: Message = await bot.listen(editable.chat.id)
+        editable = await editable.edit(f"**⚙️PROCESSING INPUT.......**")
+
+        if input.document:
+            processing_request = True
+            x = await input.download()        
+            await input.delete(True)
+            file_name, ext = os.path.splitext(os.path.basename(x))
+            credit = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+            path = f"./downloads/{m.chat.id}"
+
     try:    
         with open(x, "r") as f:
             content = f.read()
@@ -182,6 +187,7 @@ else:
         await m.reply_text("Invalid file input.")
         os.remove(x)
         return
+    
    
     await editable.edit(f"Total links found are **{len(links)}**\n\nSend From where you want to download initial is **1**")
     input0: Message = await bot.listen(editable.chat.id)
@@ -205,7 +211,7 @@ else:
     raw_text2 = input2.text
     await input2.delete(True)
     try:
-        if raw_text2 == "144":
+         if raw_text2 == "144":
             res = "256x144"
         elif raw_text2 == "240":
             res = "426x240"
