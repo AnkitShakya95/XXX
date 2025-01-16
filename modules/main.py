@@ -34,6 +34,7 @@ bot = Client(
     bot_token=BOT_TOKEN
 )
 
+
 cookies_file_path = os.getenv("COOKIES_FILE_PATH", "youtube_cookies.txt")
 
 # Define aiohttp routes
@@ -158,6 +159,10 @@ async def restart_handler(_, m):
 
 @bot.on_message(filters.command(["ankit","upload"]) )
 async def txt_handler(bot: Client, m: Message):
+    if message.from_user.id == my_id:
+        await m.reply_text("** YOU ARE NOT IN ADMIN LIST **",reply_markup=keyboard)
+        return
+else:
     editable = await m.reply_text(f"**🔹Hi I am Poweful TXT Downloader📥 Bot.**\n🔹**Send me the TXT file and wait.**")
     input: Message = await bot.listen(editable.chat.id)
     x = await input.download()
