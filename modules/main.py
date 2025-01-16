@@ -188,6 +188,7 @@ async def restart_handler(_, m):
 async def owner_command(client, message: Message):
     await message.reply_text("This command is restricted to the bot owner!")
     return
+
 else:
     editable = await m.reply_text(f"**🔹Hi I am Poweful TXT Downloader📥 Bot.**\n🔹**Send me the TXT file and wait.**")
     input: Message = await bot.listen(editable.chat.id)
