@@ -127,53 +127,49 @@ async def main():
     except (KeyboardInterrupt, SystemExit):
         await stop_bot()
         
-class Data:
-    START = (
-        "🌟 Welcome {0}! 🌟\n\n"
-    )
+
 # Define the start command handler
 @bot.on_message(filters.command("start"))
 async def start(client: Client, msg: Message):
-    user = await client.get_me()
-    mention = user.mention
-    start_message = await client.send_message(
-        msg.chat.id,
-        Data.START.format(msg.from_user.mention)
+    loading_message = await bot.send_message(
+        chat_id=message.chat.id,
+        text="St"
     )
 
     await asyncio.sleep(1)
     await start_message.edit_text(
-        Data.START.format(msg.from_user.mention) +
-        "Initializing Uploader bot... 🤖\n\n"
-        "Progress: [⬜⬜⬜⬜⬜⬜⬜⬜⬜] 0%\n\n"
+        chat_id=message.chat.id,
+        text="Star"
     )
 
     await asyncio.sleep(1)
     await start_message.edit_text(
-        Data.START.format(msg.from_user.mention) +
-        "Loading features... ⏳\n\n"
-        "Progress: [🟥🟥🟥⬜⬜⬜⬜⬜⬜] 25%\n\n"
+        chat_id=message.chat.id,
+        text="Starting..."
     )
     
     await asyncio.sleep(1)
     await start_message.edit_text(
-        Data.START.format(msg.from_user.mention) +
-        "This may take a moment, sit back and relax! 😊\n\n"
-        "Progress: [🟧🟧🟧🟧🟧⬜⬜⬜⬜] 50%\n\n"
+        chat_id=message.chat.id,
+        text="❤️.."
     )
 
     await asyncio.sleep(1)
     await start_message.edit_text(
-        Data.START.format(msg.from_user.mention) +
-        "Checking Bot Status... 🔍\n\n"
-        "Progress: [🟨🟨🟨🟨🟨🟨🟨⬜⬜] 75%\n\n"
-    )
+        chat_id=message.chat.id,
+        text="🥰💞"
+)
 
     await asyncio.sleep(1)
     await start_message.edit_text(
-        Data.START.format(msg.from_user.mention) +
-        "Checking status Ok... Command Nhi Bataunga **Bot Made BY 𝐀𝐍𝐊𝐈𝐓 𝐒𝐇𝐀𝐊𝐘𝐀™👨🏻‍💻**🔍\n\n"
-        "Progress:[🟩🟩🟩🟩🟩🟩🟩🟩🟩] 100%\n\n"
+        chat_id=message.chat.id,
+        text="❤️‍🔥.."
+    )
+    
+    await asyncio.sleep(1)
+    await start_message.edit_text(
+        chat_id=message.chat.id,
+        text="Started❤️‍🔥💞..."
     )
 
 @bot.on_message(filters.command(["stop"]) )
@@ -185,17 +181,13 @@ async def restart_handler(_, m):
 
 # Commands for owner only
 @bot.on_message(filters.command("ankit","upload") & owner_only)
-async def owner_command(client, message: Message):
-     await m.reply_text("** YOU ARE NOT IN ADMIN LIST **",reply_markup=keyboard)
-     return
-    else: 
-        editable = await m.reply_text(f"**➠ 𝐒𝐞𝐧𝐝 𝐌𝐞 𝐘𝐨𝐮𝐫 𝐓𝐗𝐓 𝐅𝐢𝐥𝐞 𝐢𝐧 𝐀 𝐏𝐫𝐨𝐩𝐞𝐫 𝐖𝐚𝐲 \n\n➠ TXT FORMAT : LINK : URL \n➠ 𝐌𝐨𝐝𝐢𝐟𝐢𝐞𝐝 𝐁𝐲:  @SUNXPP_1**")
+async def owner_command(client, message: Message):     
+        editable = await m.reply_text(f"**➠ 𝐒𝐞𝐧𝐝 𝐌𝐞 𝐘𝐨𝐮𝐫 𝐓𝐗𝐓 𝐅𝐢𝐥𝐞 𝐢𝐧 𝐀 𝐏𝐫𝐨𝐩𝐞𝐫 𝐖𝐚𝐲 \n\n➠ TXT FORMAT : LINK : URL \n➠ 𝐌𝐨𝐝𝐢𝐟𝐢𝐞𝐝 𝐁𝐲:  @Ankit_Shakya72**")
         input: Message = await bot.listen(editable.chat.id)
         x = await input.download()
         await input.delete(True)
         file_name, ext = os.path.splitext(os.path.basename(x))
         credit = f"𝐀𝐍𝐊𝐈𝐓 𝐒𝐇𝐀𝐊𝐘𝐀™🇮🇳"
-        token = f"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzYxNTE3MzAuMTI2LCJkYXRhIjp7Il9pZCI6IjYzMDRjMmY3Yzc5NjBlMDAxODAwNDQ4NyIsInVzZXJuYW1lIjoiNzc2MTAxNzc3MCIsImZpcnN0TmFtZSI6IkplZXYgbmFyYXlhbiIsImxhc3ROYW1lIjoic2FoIiwib3JnYW5pemF0aW9uIjp7Il9pZCI6IjVlYjM5M2VlOTVmYWI3NDY4YTc5ZDE4OSIsIndlYnNpdGUiOiJwaHlzaWNzd2FsbGFoLmNvbSIsIm5hbWUiOiJQaHlzaWNzd2FsbGFoIn0sImVtYWlsIjoiV1dXLkpFRVZOQVJBWUFOU0FIQEdNQUlMLkNPTSIsInJvbGVzIjpbIjViMjdiZDk2NTg0MmY5NTBhNzc4YzZlZiJdLCJjb3VudHJ5R3JvdXAiOiJJTiIsInR5cGUiOiJVU0VSIn0sImlhdCI6MTczNTU0NjkzMH0.iImf90mFu_cI-xINBv4t0jVz-rWK1zeXOIwIFvkrS0M"
     try:    
         with open(x, "r") as f:
             content = f.read()
