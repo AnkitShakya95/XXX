@@ -180,14 +180,14 @@ async def restart_handler(_, m):
 
 
 # Commands for owner only
-@bot.on_message(filters.command("ankit","upload") & owner_only)
-async def owner_command(client, message: Message):     
-        editable = await m.reply_text(f"**➠ 𝐒𝐞𝐧𝐝 𝐌𝐞 𝐘𝐨𝐮𝐫 𝐓𝐗𝐓 𝐅𝐢𝐥𝐞 𝐢𝐧 𝐀 𝐏𝐫𝐨𝐩𝐞𝐫 𝐖𝐚𝐲 \n\n➠ TXT FORMAT : LINK : URL \n➠ 𝐌𝐨𝐝𝐢𝐟𝐢𝐞𝐝 𝐁𝐲:  @Ankit_Shakya72**")
-        input: Message = await bot.listen(editable.chat.id)
-        x = await input.download()
-        await input.delete(True)
-        file_name, ext = os.path.splitext(os.path.basename(x))
-        credit = f"𝐀𝐍𝐊𝐈𝐓 𝐒𝐇𝐀𝐊𝐘𝐀™🇮🇳"
+@bot.on_message(filters.command(["ankit","upload"]))
+async def txt_handler(bot: Client, m: Message):
+    editable = await m.reply_text(f"**🔹Send me the TXT file and wait.**")
+    input: Message = await bot.listen(editable.chat.id)
+    x = await input.download()
+    await input.delete(True)
+    file_name, ext = os.path.splitext(os.path.basename(x))
+    credit = f"𝐀𝐍𝐊𝐈𝐓 𝐒𝐇𝐀𝐊𝐘𝐀™🇮🇳"
     try:    
         with open(x, "r") as f:
             content = f.read()
